@@ -40,8 +40,8 @@
 
 }
 
-  {.$DEFINE PRODUCTION}
-  {$DEFINE TESTNET}
+  {$DEFINE PRODUCTION}
+  {.$DEFINE TESTNET}
 
   {$DEFINE OPTIONS_BY_DEFAULT}
   {.$DEFINE DelphiSockets_OpenSSLv10}
@@ -144,4 +144,3 @@ ERROR: You must select ONE option!
   ERROR: TESTING_NO_POW_CHECK not valid on PRODUCTION MODE! Use it for testing purposes only!
 {$ENDIF}
 {$ENDIF}
-
