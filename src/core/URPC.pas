@@ -27,7 +27,10 @@ interface
 Uses UThread, ULog, UConst, UNode, UAccounts, UCrypto, UBlockChain,
   UNetProtocol, UOpTransaction, UWallet, UTime, UPCEncryption, UTxMultiOperation,
   UJSONFunctions, classes, blcksock, synsock,
-  IniFiles, Variants, math, UBaseTypes, UOpenSSL,
+  IniFiles, Variants, math, UBaseTypes,
+  {$IFDEF Use_OpenSSL}
+  UOpenSSL,
+  {$ENDIF}
   UPCOrderedLists, UPCDataTypes,
   {$IFNDEF FPC}System.Generics.Collections{$ELSE}Generics.Collections{$ENDIF},
   UNetProtection;
@@ -940,6 +943,7 @@ function TRPCProcess.ProcessMethod(const method: String; params: TPCJSONObject;
 
   Function CheckAndGetEncodedRAWPayload(Const RawPayload : TRawBytes; Const Payload_method, EncodePwdForAES : String; const senderAccounKey, targetAccountKey : TAccountKey; var EncodedRAWPayload : TRawBytes) : Boolean;
   begin
+    Result := False;
     if (length(RawPayload)>0) then begin
       if (Payload_method='none') then EncodedRAWPayload:=RawPayload
       else if (Payload_method='dest') then begin
@@ -954,6 +958,7 @@ function TRPCProcess.ProcessMethod(const method: String; params: TPCJSONObject;
         exit;
       end;
     end else EncodedRAWPayload := Nil;
+    Result := True;
   end;
 
   // This function creates a TOpTransaction without looking for balance/private key of sender account
@@ -3426,7 +3431,9 @@ begin
     GetResultObject.GetAsObject('netstats').GetAsVariant('tservers').Value:=TNetData.NetData.NetStatistics.TotalServersConnections;
     GetResultObject.GetAsObject('netstats').GetAsVariant('breceived').Value:=TNetData.NetData.NetStatistics.BytesReceived;
     GetResultObject.GetAsObject('netstats').GetAsVariant('bsend').Value:=TNetData.NetData.NetStatistics.BytesSend;
+    {$IFDEF Use_OpenSSL}
     GetResultObject.GetAsVariant('openssl').Value := IntToHex(OpenSSLVersion,8);
+    {$ENDIF}
     nsaarr := TNetData.NetData.NodeServersAddresses.GetValidNodeServers(true,20);
     for i := low(nsaarr) to High(nsaarr) do begin
       jso := GetResultObject.GetAsArray('nodeservers').GetAsObject(i);
