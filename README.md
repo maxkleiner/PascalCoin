@@ -1,36 +1,35 @@
-# Pascal Coin: P2P Cryptocurrency without need of historical operations.  
-  
+# Pascal Coin
+
+P2P Cryptocurrency without need of historical operations.  
+
+![PascalCoin](resources/logo.svg)
+
+```
 Copyright (c) 2016-2019 PascalCoin developers based on original Albert Molina source code
   
-THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.  
-  
-This software is a Node of the Pascal Coin P2P Cryptocurrency.  
-It can be used to Mine and Explore blocks and operations.  
-  
-Distributed under the MIT software license, see the accompanying file  
-LICENSE  or visit http://www.opensource.org/licenses/mit-license.php.  
+THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
+```
 
-This product includes software developed by the OpenSSL Project and Denis  
-Grinyuk (https://github.com/Arvur/OpenSSL-Delphi), and some  
-cryptographic functions inspirated in code written by Ladar Levison and   
-Marco Ferrante.  
-Original source code is written in Pascal Language and is available at   
-https://github.com/PascalCoin/PascalCoin  
-  
-  
+This repository contains the node and the wallet of the Pascal Coin P2P Cryptocurrency.
+
+The source code is distributed under the MIT software license, see the accompanying file LICENSE or visit http://www.opensource.org/licenses/mit-license.php.
+
+This product includes software developed by the OpenSSL Project and Denis Grinyuk (https://github.com/Arvur/OpenSSL-Delphi), and some  
+cryptographic functions inspirated in code written by Ladar Levison and Marco Ferrante.  
+
 ## HOW TO COMPILE:  
   
-See instructions at GitHub Wiki: https://github.com/PascalCoin/PascalCoin/wiki
-  
-  
+See instructions at GitHub Wiki: https://github.com/PascalCoinDev/PascalCoin/wiki
+ 
 Enjoy Pascal Coin!
   
 ## Donations  
   
 If you like it, consider a donation using BitCoin:
-16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk
 
-Also, consider a donation at PascalCoin development account: "0-10"
+`16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
+
+Also, consider a donation at PascalCoin development account: `0-10`
 
 ## History:  
 
