@@ -1,4 +1,4 @@
-# Pascal Coin
+# PascalCoin
 
 P2P Cryptocurrency without need of historical operations.  
 
