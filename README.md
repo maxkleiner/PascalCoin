@@ -12,7 +12,11 @@ THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
 
 ## A P2P Cryptocurrency without need of historical operations.
 
-This repository contains the node and the wallet of the PascalCoin P2P Cryptocurrency.
+PascalCoin is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities.
+
+Enabled by the SafeBox technology to become the world's first blockchain independent of historical operations, PascalCoin possesses unlimited potential.
+
+### License
 
 The source code is distributed under the `MIT software license`, see the accompanying file LICENSE or visit http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,6 +24,14 @@ This product includes software developed by the OpenSSL Project and Denis Grinyu
 cryptographic functions inspirated in code written by Ladar Levison and Marco Ferrante.  
 
 Go to https://www.pascalcoin.org to find out more.
+
+### Chat with us, follow us, like us
+
+In case you have questions or just want to get in touch with like-minded PascalCoin users.
+
+ - Listen to our twitter on: https://twitter.com/PascalCoin
+ - Chat with us on discord: https://discord.gg/9YYZyw
+ - Join our subreddit on: https://discord.gg/9YYZyw
 
 ### Donations  
   
@@ -32,15 +44,6 @@ Send donations to `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
 #### PascalCoin
 
 Send donations to account: `0-10`
-
-### Chat with us, follow us, like us
-
-In case you have questions or just want to get in touch with like-minded PascalCoin users.
-
- - Listen to our twitter on: https://twitter.com/PascalCoin
- - Chat with us on discord: https://discord.gg/9YYZyw
- - Join our subreddit on: https://discord.gg/9YYZyw
-
 
 ## History:  
 
