@@ -1,3 +1,5 @@
+![License](https://img.shields.io/github/license/PascalCoin/PascalCoin.svg?style=for-the-badge)
+
 ![PascalCoin](resources/logo.svg)
 
 ```
@@ -8,27 +10,26 @@ THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
 
 ## A P2P Cryptocurrency without need of historical operations.
 
-
 This repository contains the node and the wallet of the PascalCoin P2P Cryptocurrency.
 
-The source code is distributed under the MIT software license, see the accompanying file LICENSE or visit http://www.opensource.org/licenses/mit-license.php.
+The source code is distributed under the `MIT software license`, see the accompanying file LICENSE or visit http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project and Denis Grinyuk (https://github.com/Arvur/OpenSSL-Delphi), and some  
 cryptographic functions inspirated in code written by Ladar Levison and Marco Ferrante.  
 
-## HOW TO COMPILE:  
-  
-See instructions at GitHub Wiki: https://github.com/PascalCoinDev/PascalCoin/wiki
- 
-Enjoy Pascal Coin!
-  
-## Donations  
+Go to https://www.pascalcoin.org to find out more.
+
+### Donations  
   
 If you like it, consider a donation using BitCoin:
 
 `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
 
 Also, consider a donation at PascalCoin development account: `0-10`
+
+### Community
+
+Join our discord server by clicking this link: https://discord.gg/9YYZyw
 
 ## History:  
 
