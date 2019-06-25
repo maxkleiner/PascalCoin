@@ -1,6 +1,8 @@
 ![License](https://img.shields.io/github/license/PascalCoin/PascalCoin.svg?style=for-the-badge)
+![DISCORD](https://img.shields.io/discord/383064643482025984.svg?label=DISCORD%20COMMUNITY&style=for-the-badge)
+![REDDIT](https://img.shields.io/reddit/subreddit-subscribers/pascalcoin.svg?style=for-the-badge)
 
-![PascalCoin](resources/logo.svg)
+<img width="50%" src="resources/logo.svg" />
 
 ```
 Copyright (c) 2016-2019 PascalCoin developers based on original Albert Molina source code
@@ -21,15 +23,24 @@ Go to https://www.pascalcoin.org to find out more.
 
 ### Donations  
   
-If you like it, consider a donation using BitCoin:
+Please consider a donation to the inventor of PascalCoin, Albert Molina.
 
-`16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
+#### BitCoin:
 
-Also, consider a donation at PascalCoin development account: `0-10`
+Send donations to `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
 
-### Community
+#### PascalCoin
 
-Join our discord server by clicking this link: https://discord.gg/9YYZyw
+Send donations to account: `0-10`
+
+### Chat with us, follow us, like us
+
+In case you have questions or just want to get in touch with like-minded PascalCoin users.
+
+ - Listen to our twitter on: https://twitter.com/PascalCoin
+ - Chat with us on discord: https://discord.gg/9YYZyw
+ - Join our subreddit on: https://discord.gg/9YYZyw
+
 
 ## History:  
 
