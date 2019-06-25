@@ -1,7 +1,3 @@
-# PascalCoin
-
-P2P Cryptocurrency without need of historical operations.  
-
 ![PascalCoin](resources/logo.svg)
 
 ```
@@ -10,7 +6,10 @@ Copyright (c) 2016-2019 PascalCoin developers based on original Albert Molina so
 THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
 ```
 
-This repository contains the node and the wallet of the Pascal Coin P2P Cryptocurrency.
+## A P2P Cryptocurrency without need of historical operations.
+
+
+This repository contains the node and the wallet of the PascalCoin P2P Cryptocurrency.
 
 The source code is distributed under the MIT software license, see the accompanying file LICENSE or visit http://www.opensource.org/licenses/mit-license.php.
 
