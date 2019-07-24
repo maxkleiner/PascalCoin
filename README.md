@@ -34,6 +34,13 @@ Also, consider a donation at PascalCoin development account: "0-10"
 
 ## History:  
 
+### Build 4.1.0.0 - 2019-07-24
+- Hardcoded RandomHash digest/hash values for quick speed safebox check on fresh installation
+  - GUI wallets will load "HardcodedRH_75800.randomhash" file (at exe folder) and preload a randomhash digest/hash values for quick first time synchronization
+- Fixed bug caused by CT_NetOp_GetSafeBox too quickly on old versions (4.0.2 and lower)
+  - Added a delay of at least 1 second per call when peer node is protocol version lower than version 9
+- Fixed bug #187 found by Isaac Cook (icook)
+
 ### Build 4.0.3.1 - 2019-04-12
 - Fixed core bug #182 in RPC calls
 
