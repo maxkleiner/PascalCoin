@@ -1,6 +1,6 @@
-## History:  
+# Changelog
 
-### Current Build (Pending release date)
+## Current Build (Pending release date)
 - Upgrade to Protocol 5 (Hard fork)
 - Implementation of PIP-0032 (Atomic Swaps) -> https://github.com/PascalCoin/PascalCoin/blob/master/PIP/PIP-0032.md
 - Implementation of PIP-0030 (Safebox root) -> https://github.com/PascalCoin/PascalCoin/blob/master/PIP/PIP-0030.md
@@ -57,7 +57,7 @@ TODO
 - TODO: RPC calls for PIP-0030
 - TODO: RPC calls for PIP-0016
 
-### Build 4.1.0.0 - 2019-07-24
+## Build 4.1.0.0 - 2019-07-24
 - Hardcoded RandomHash digest/hash values for quick speed safebox check on fresh installation
   - GUI wallets will load "HardcodedRH_75800.randomhash" file (at exe folder) and preload a randomhash digest/hash values for quick first time synchronization
 - Fixed bug caused by CT_NetOp_GetSafeBox too quickly on old versions (4.0.2 and lower)
@@ -65,10 +65,10 @@ TODO
 - Fixed bug #187 found by Isaac Cook (icook)
 - Improved memory management on NetProtection (auto clean memory)
 
-### Build 4.0.3.1 - 2019-04-12
+## Build 4.0.3.1 - 2019-04-12
 - Fixed core bug #182 in RPC calls
 
-### Build 4.0.3 - 2019-04-10
+## Build 4.0.3 - 2019-04-10
 - Improvements:
   - Up to +1600 operations per second using a domestic computer (4 CPU)
   - Download and check new Safebox in less than 5 minutes
@@ -91,7 +91,7 @@ TODO
   - Multithread on User Accounts to avoid freeze when updating data
   - Fixed Minor bugs (See GitHub commits since 2019-01-08)  
 
-### Build 4.0.2 - 2019-01-08
+## Build 4.0.2 - 2019-01-08
 - Improvement speed (high performance): checking valid signature only once if operation is on mempool and was verified previously
 - Improved operations/blocks propagation
 - Fixed a decompression bug caused by FreePascal "paszlib" package bug on version 3.0.4 -> https://bugs.freepascal.org/view.php?id=34422
@@ -106,13 +106,13 @@ TODO
 - Important logs reduction to store only logs that are important
 - Fixed minor bugs and minor improvements (See GitHub commits since 2018-10-31)
 
-### Build 4.0.1 - 2018-10-31
+## Build 4.0.1 - 2018-10-31
 - Fixed a critical "Access violation" at "Fast Block Propagation" process
 - Fixed a critical "Access violation" at "Get blockchain operations" process
 - Fixed a memory leak at "Get Block operations"
 - Updated Net protocol available to 9 (8 was introduced at build 4.0.0)
 
-### Build 4.0.0 - 2018-10-26
+## Build 4.0.0 - 2018-10-26
 - MANDATORY UPGRADE - HARD FORK ACTIVATION WILL OCCUR ON BLOCK 260000
   - PIP - 0009: RandomHash
     - RandomHash is a new hash algo created by Herman Schoenfeld, see https://github.com/PascalCoin/PascalCoin/blob/master/PIP/PIP-0009.md 
@@ -156,11 +156,11 @@ TODO
   - "Get blockchain operations": NetOp 0x0013 for PIP-0015
   - "Get Public key accounts": NetOp 0x0032
 
-### Build 3.0.1 - 2018-05-07
+## Build 3.0.1 - 2018-05-07
 - Deprecated use of OpenSSL v1.0 versions. Only allowed OpenSSL v1.1 versions
 - JSON-RPC Added param "openssl" on "nodestatus" call. Will return OpenSSL library version as described in OpenSSL_version_num ( https://www.openssl.org/docs/man1.1.0/crypto/OPENSSL_VERSION_NUMBER.html )
 
-### Build 3.0.0 - 2018-05-02
+## Build 3.0.0 - 2018-05-02
 - Implementation of Hard fork on block 210000
   - PIP - 0010: 50% inflation reduction
   - PIP - 0011: 20% Development reward
@@ -314,17 +314,17 @@ TODO
 - New folders organization
 - Bugs solved
 
-### Build 2.1.9 - 2018-04-16
+## Build 2.1.9 - 2018-04-16
 - Searchs last valid block found on corrupted BlockChainStream.blocks file and allows to continue from last valid one. On prior versions, app halted and needed manually file deletion
 
-### Build 2.1.8 - 2018-04-16
+## Build 2.1.8 - 2018-04-16
 - Solved bug that can cause to corrupt BlockChainStream.blocks file when detecting an orphan block and creating new BlockHeaders row (every 1000 blocks). Very rare bug, but fatal error
 
-### Build 2.1.7 - 2018-04-10
+## Build 2.1.7 - 2018-04-10
 - Remove use of TPCOperation.FSignatureChecked introduced on 2.1.6 because is not 100% secure
 - Minor bugs
 
-### Build 2.1.6 - 2018-02-14
+## Build 2.1.6 - 2018-02-14
 - Important improvements
   - Improved speed when processing operations on start
   - Improved speed when processing pending operations after a new block found
@@ -337,7 +337,7 @@ TODO
 - Those improvements solved BUG that caused operations not included to blockchain due slow processing with MemPool 
 - NOTE: It's HIGHLY RECOMMENDED to upgrade to this version
 
-### Build 2.1.5 - 2018-02-09
+## Build 2.1.5 - 2018-02-09
 - GUI changes:
   - Allow massive accounts "change info" operation
   - Added "account type" and "sale price" on accounts grid
@@ -373,29 +373,29 @@ TODO
 - Solved bug in Network adjusted time on receiving connections caused by full entry buffer
 - Minor optimizations
 
-### Build 2.1.3.0 - 2017-11-15
+## Build 2.1.3.0 - 2017-11-15
 - Fixed BUG when buying account assigning an invalid public key
 - Added maxim value to node servers buffer, deleting old node servers not used, this improves speed
 - Re-add orphaned operations back into the pending pool
 - RPC locking to prevent N_Operation race-condition on concurrent invocations
 - Minor bugs
 
-### Build 2.1.2.0 - 2017-07-27
+## Build 2.1.2.0 - 2017-07-27
 - No more blockchain in installer = TRUE DELETABLE BLOCKCHAIN (Safebox will be automatically downloaded by client from network)
 - Fixed storage bug when downloading a new safebox
 - Safebox will be downloaded in small chunks (aprox 2mb per chunk)
 - Read safebox file improvements (quick start)
 
-### Build 2.1.1.0 - 2017-07-16
+## Build 2.1.1.0 - 2017-07-16
 - Fixed installer bug: In last Windows installer a malformed safebox file was included. This build is only to provide a good safebox file with the installer
 - No important changes in exe/binary file 
 
-### Build 2.1.0.0 - 2017-07-14
+## Build 2.1.0.0 - 2017-07-14
 - Fixed bug of slow mass transactions from a single account due to incorrect sending order
 - Fixed memory leak on GetSafeBox request call
 - Added new GUI improvements on Operations form
 
-### Build 2.0.0.0 - 2017-06-23
+## Build 2.0.0.0 - 2017-06-23
 - MANDATORY UPGRADE - HARD FORK ACTIVATION WILL OCCUR ON BLOCK 115000
 - Introducing Protocol v2.
   - https://github.com/PascalCoin/PascalCoin/blob/master/PascalCoinWhitePaperV2.pdf
@@ -512,7 +512,7 @@ TODO
   - Bug for china users fixed  
   - Bugs fixed
 
-### Build 1.5.6.0 - 2017-05-03
+## Build 1.5.6.0 - 2017-05-03
 - Allow multiselect accounts (GUI wallet)
 - Priority for operations with fee:
   - Allow miner server (pools) to select what to mine using pascalcoin_daemon.ini file (daemon only)
@@ -525,14 +525,14 @@ TODO
 - Fixed bug on file storage
 - Fixed minor bugs
 
-### Build 1.5.5.0 - 2017-04-11
+## Build 1.5.5.0 - 2017-04-11
 - Corrected fee result on RPC calls as a negative number on "Change key" operations
 - Corrected PASCURRENCY value to be limited as a 4 decimal digits on RPC calls
 - JSON-RPC method "getaccountoperations" changed: if param "start" is -1, will include pending operations, otherwise not
 - Fixed bug: On "getaccountoperations" if an account had a lot of operations (receive tx included) then sometimes app crashed when executing depth search.
   - Note: High depth search is slow because it search always starting from current state, going backwards, in order to return past balance. This can be a slow method on some account with high transactions volume.
 
-### Build 1.5.4.0 - 2017-03-14
+## Build 1.5.4.0 - 2017-03-14
 
 - Added Network Timestamp Adjustment (NAT) to calc valid timestamps
   - Minimum 4 active connections to calc median used for NAT, otherwise use local timestamp
@@ -547,7 +547,7 @@ TODO
   - Method "payloaddecrypt" added "unenc_hexpayload" result value with HEXASTRING of unencrypted payload
 - Fixed some "Random Memory access violation errors" bugs found caused by multithreading and disconnected nodes
 
-### Build 1.5.3.0 - 2017-03-06
+## Build 1.5.3.0 - 2017-03-06
 
 - Fixed issue #23: RPC findoperation fails to find operation by opHash
 - Miners best practices: Sending new job with new timestamp every 30 seconds
@@ -556,7 +556,7 @@ TODO
 - Minor logs changes
 
 
-### Build 1.5.2.0 - 2017-03-03
+## Build 1.5.2.0 - 2017-03-03
 
 - Added a jobs buffer for miners. This will allow to submit old job solutions (limited buffer). (Fix the "tx" issue)
 - Miner jobs will not be sent every time a transaction is received, thet will be buffered and sent every few seconds (Fix the "tx" issue)
@@ -564,14 +564,14 @@ TODO
 - Daemon: Allow select on ini file how many connections can handle
 - Fixed a locking when deleting connections
 
-### Build 1.5.1.0 - 2017-02-20
+## Build 1.5.1.0 - 2017-02-20
 
 - Memory leak fixed on RPC-JSON commands
 - Memory leak fixed on node connections
 - Improved network speed processing new blocks/operations
 - Some minor bugs
 
-### Build 1.5.0.0 - 2017-02-15
+## Build 1.5.0.0 - 2017-02-15
 
 - Net protocol upgrade to 4-5
 - Introducing "more work" with high priority than "more high". Work is calculated based on target. Higher target (more work) is more important than higher length
@@ -580,25 +580,25 @@ TODO
 - Added JSON-RPC port 4003 protection Whitelist (only allowed IP's can use JSON-RPC)
 
 
-### Build 1.4.3.0 - 2017-02-02
+## Build 1.4.3.0 - 2017-02-02
 
 - Adding "maturation" param to "JSON Operation object", return null when operation is not included on a blockchain yet, 0 means that is included in highest block and so on...
 - Fixing miner timestamp value to prevent invalid time
 
-### Build 1.4.2.0 - 2017-01-23
+## Build 1.4.2.0 - 2017-01-23
 
 - Max JSON-RPC miner connections is now 1000 (before, 10)
 - JSON-RPC miner enabled at pascalcoin_daemon (linux daemon)
 - Screen messages for daemon
 - pascalcoin_daemon.ini file for daemon
 
-### Build 1.4.1.0 - 2017-01-18
+## Build 1.4.1.0 - 2017-01-18
 
 - Improved JSON communications with Miner client (Port 4009 by default)
 - Deleted adding numeration to JSON miner clients (only sends miner name)
 - Minor changes
 
-### Build 1.4.0.0 - 2016-12-30
+## Build 1.4.0.0 - 2016-12-30
 
 - JSON-RPC changes:
   - Added method "signsendto" to allow a off-line wallet sign transaction operations without being syncrhonized
@@ -615,7 +615,7 @@ TODO
 - Updated net protocol to 3-4
 - Important bug corrected
 
-### Build 1.3.0.0 - 2016-11-24
+## Build 1.3.0.0 - 2016-11-24
 
 - JSON-RPC modifications:
   - New param "b58_pubkey", can be used instead of "enc_pubkey": b58_pubkey is a Base58 encoded public key with checksum, is the value that Wallet exports/imports public key
@@ -642,7 +642,7 @@ TODO
 - Added "open data folder" button on options form
 - Other minor changes
 
-### Build 1.2.0.0 - 2016-11-16
+## Build 1.2.0.0 - 2016-11-16
 
 - Account checksum values modified to be more easy and more distributed: Checksum = ((N * 101) MOD 89)+10
 - Allow find operations by "ophash"
@@ -655,19 +655,19 @@ TODO
 - Corrected invalid operation block index when showing account operations
 
 
-### Build 1.1.0.0 - 2016-11-03
+## Build 1.1.0.0 - 2016-11-03
 
 - JSON-RPC Server included
 - Minor changes
 
 
-### Build 1.0.9.0 - 2016-10-21
+## Build 1.0.9.0 - 2016-10-21
 
 - Corrected a BUG (BUG-101) that causes blocking connections when received more than 100 connections, causing "alone in the world" after a cert period time.
 - It's necessary to update because new version will refuse old versions to make network stable.
 
 
-### Build 1.0.8.0 - 2016-10-20
+## Build 1.0.8.0 - 2016-10-20
 
 - Cross compatible
 - Can compile with Delphi or Lazarus (Free Pascal)
@@ -675,21 +675,21 @@ TODO
 - Network hashrate calculation
 
 
-### Build 1.0.7.0 - 2016-10-10
+## Build 1.0.7.0 - 2016-10-10
 
 - Introducing basic JSON-RPC to allow GPU miners development (Third party).
 - See file "HOWTO_DEVELOP_GPU_MINER_FOR_PASCALCOIN.txt"
 - No more CPU mining due exists GPU mining
 
 
-### Build 1.0.6.0 - 2016-10-04
+## Build 1.0.6.0 - 2016-10-04
 
 - Memory leaks corrections
 - Introducing net protocol 2-3
 - Source code modified, next build will be compiled with Lazarus and FPC
 
 
-### Build 1.0.5.0 - 2016-09-21
+## Build 1.0.5.0 - 2016-09-21
 
 - Massive operations, selecting multiple accounts
 - Filter accounts by balance
@@ -697,7 +697,7 @@ TODO
 - Minor changes
 
 
-### Build 1.0.4.0 - 2016-09-16
+## Build 1.0.4.0 - 2016-09-16
 
 - IMPORTANT: Introducing net protocol changes: Must update!
 - More and more and more stable
@@ -706,7 +706,7 @@ TODO
 - IP nodes configurator
 
 
-### Build 1.0.3.0 - 2016-09-08
+## Build 1.0.3.0 - 2016-09-08
 
 - Important changes to database 
 - Peer cache
@@ -716,7 +716,7 @@ TODO
 - Invalid local time detector
 
 
-### Build 1.0.2.0 - 2016-08-31
+## Build 1.0.2.0 - 2016-08-31
 
 - Improved hashing speed
 - Allow mining without opening external ports
@@ -725,13 +725,13 @@ TODO
 - More stable
 - Some miner modifications
 
-### Build 1.0.1.0 - 2016-08-12
+## Build 1.0.1.0 - 2016-08-12
 
 - Included an option to Import/Export Wallet keys file
 - Some miner modifications
 
 
-### Build 1.0.0.0 - 2016-08-11
+## Build 1.0.0.0 - 2016-08-11
 
 - First stable version.
 - Created with Genesis block hardcoded
