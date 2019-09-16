@@ -12,7 +12,7 @@ Copyright (c) 2016-2019 Pascal developers based on original Albert Molina source
 THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
 ```
 
-## A one of a kind Cryptocurrency
+## A One of a kind Cryptocurrency
 
 > Pascal is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities. It's the world's first blockchain independent of historical operations.
 
