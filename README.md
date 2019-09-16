@@ -12,9 +12,9 @@ THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
 
 ## A P2P Cryptocurrency without need of historical operations.
 
-Pascal is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities.
+> Pascal is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities. It's the world's first blockchain independent of historical operations
 
-Enabled by the SafeBox technology to become the world's first blockchain independent of historical operations, Pascal possesses unlimited potential.
+> Pascal possesses unlimited potential.
 
 ### License
 
