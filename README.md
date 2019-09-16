@@ -3,8 +3,11 @@
 ![REDDIT](https://img.shields.io/reddit/subreddit-subscribers/pascalcoin.svg?style=for-the-badge)
 
 <p align="center">
+<br /><br />
 <img width="30%" src="resources/logo.svg" />
 </p>
+<br /><br />
+
 
 ```
 Copyright (c) 2016-2019 Pascal developers based on original Albert Molina source code
