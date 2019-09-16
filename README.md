@@ -2,7 +2,9 @@
 ![DISCORD](https://img.shields.io/discord/383064643482025984.svg?label=DISCORD%20COMMUNITY&style=for-the-badge)
 ![REDDIT](https://img.shields.io/reddit/subreddit-subscribers/pascalcoin.svg?style=for-the-badge)
 
+<p align="center">
 <img width="30%" src="resources/logo.svg" />
+</p>
 
 ```
 Copyright (c) 2016-2019 Pascal developers based on original Albert Molina source code
@@ -10,9 +12,9 @@ Copyright (c) 2016-2019 Pascal developers based on original Albert Molina source
 THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
 ```
 
-## A P2P Cryptocurrency without need of historical operations.
+## A one of a kind Cryptocurrency
 
-> Pascal is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities. It's the world's first blockchain independent of historical operations
+> Pascal is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities. It's the world's first blockchain independent of historical operations.
 
 > Pascal possesses unlimited potential.
 
