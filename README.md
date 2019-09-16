@@ -2,7 +2,7 @@
 ![DISCORD](https://img.shields.io/discord/383064643482025984.svg?label=DISCORD%20COMMUNITY&style=for-the-badge)
 ![REDDIT](https://img.shields.io/reddit/subreddit-subscribers/pascalcoin.svg?style=for-the-badge)
 
-<img width="50%" src="resources/logo.svg" />
+<img width="30%" src="resources/logo.svg" />
 
 ```
 Copyright (c) 2016-2019 Pascal developers based on original Albert Molina source code
