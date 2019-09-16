@@ -5,16 +5,16 @@
 <img width="50%" src="resources/logo.svg" />
 
 ```
-Copyright (c) 2016-2019 PascalCoin developers based on original Albert Molina source code
+Copyright (c) 2016-2019 Pascal developers based on original Albert Molina source code
   
 THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
 ```
 
 ## A P2P Cryptocurrency without need of historical operations.
 
-PascalCoin is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities.
+Pascal is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities.
 
-Enabled by the SafeBox technology to become the world's first blockchain independent of historical operations, PascalCoin possesses unlimited potential.
+Enabled by the SafeBox technology to become the world's first blockchain independent of historical operations, Pascal possesses unlimited potential.
 
 ### License
 
@@ -27,7 +27,7 @@ Go to https://www.pascalcoin.org to find out more.
 
 ### Chat with us, follow us, like us
 
-In case you have questions or just want to get in touch with like-minded PascalCoin users.
+In case you have questions or just want to get in touch with like-minded Pascal users.
 
  - Listen to our twitter on: https://twitter.com/PascalCoin
  - Chat with us on discord: https://discord.gg/9YYZyw
@@ -35,13 +35,13 @@ In case you have questions or just want to get in touch with like-minded PascalC
 
 ### Donations  
   
-Please consider a donation to the inventor of PascalCoin, Albert Molina.
+Please consider a donation to the inventor of Pascal, Albert Molina.
 
 #### BitCoin:
 
 Send donations to `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
 
-#### PascalCoin
+#### Pascal
 
 Send donations to account: `0-10`
 
