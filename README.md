@@ -48,7 +48,7 @@ In case you have questions or just want to get in touch with like-minded Pascal 
 
 ### Changelog
 
-View the changelog [CHANGELOG.md](here)
+View the changelog [here](CHANGELOG.md)
 
 ### Donations  
   
