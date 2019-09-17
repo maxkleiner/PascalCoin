@@ -38,14 +38,19 @@ In case you have questions or just want to get in touch with like-minded Pascal 
  - Chat with us on discord: https://discord.gg/9YYZyw
  - Join our subreddit on: https://discord.gg/9YYZyw
 
+### Develop with PascalCoin
+
+| Language      | Project Name | Type    | Version support | Link |
+| ------------- | ------------ | ------- | --------------- | ---- |
+| JavaScript    | SBX          | Library | 4    | [https://github.com/techworker/sbx](SBX) |
+| Dart          | PascalDart   | Library | 4    | [https://github.com/appditto/pascaldart](PascalDart) |
+
+
 ### Donations  
   
 Please consider a donation to the inventor of Pascal, Albert Molina.
 
-#### BitCoin:
+**Pascal:** Send donations to account: `0-10`
 
-Send donations to `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
+**Bitcoin:** Send donations to `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
 
-#### Pascal
-
-Send donations to account: `0-10`
