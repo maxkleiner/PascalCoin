@@ -15,13 +15,13 @@ Copyright (c) 2016-2019 Pascal developers based on original Albert Molina source
 THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
 ```
 
-## A One of a kind Cryptocurrency
+# Pascal - A One of a kind Cryptocurrency
 
 > Pascal is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities. It's the world's first blockchain independent of historical operations.
 
 > Pascal possesses unlimited potential.
 
-### License
+## License
 
 The source code is distributed under the `MIT software license`, see the accompanying [LICENSE](LICENSE) file or visit http://www.opensource.org/licenses/mit-license.php.
 
@@ -35,7 +35,7 @@ Go to https://www.pascalcoin.org to find out more.
  - [**MAINNET v4**](https://github.com/PascalCoin/PascalCoin/releases/tag/4.1)
  - [**TESTNET v5**](https://github.com/PascalCoin/PascalCoin/releases/tag/TESTNET_5.beta.1)
 
-### Chat with us, follow us, like us
+## Community
 
 In case you have questions or just want to get in touch with like-minded Pascal users.
 
@@ -43,7 +43,7 @@ In case you have questions or just want to get in touch with like-minded Pascal 
  - Chat with us on discord: https://discord.gg/9YYZyw
  - Join our subreddit on: https://discord.gg/9YYZyw
 
-### Develop with PascalCoin
+## Develop with Pascal
 
 | Language      | Project Name | Type    | Version support | Link |
 | ------------- | ------------ | ------- | --------------- | ---- |
@@ -51,11 +51,11 @@ In case you have questions or just want to get in touch with like-minded Pascal 
 | Dart          | PascalDart   | Library | 4    | [https://github.com/appditto/pascaldart](PascalDart) |
 
 
-### Changelog
+## Changelog
 
 View the changelog [here](CHANGELOG.md)
 
-### Donations  
+## Donations  
   
 Please consider a donation to the inventor of Pascal, Albert Molina.
 
@@ -63,7 +63,7 @@ Please consider a donation to the inventor of Pascal, Albert Molina.
 
 **Bitcoin:** Send donations to `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
 
-### Exchanges
+## Exchanges
 
 You can trade Pascal at the following exchanges:
 
