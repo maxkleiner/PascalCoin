@@ -46,6 +46,10 @@ In case you have questions or just want to get in touch with like-minded Pascal 
 | Dart          | PascalDart   | Library | 4    | [https://github.com/appditto/pascaldart](PascalDart) |
 
 
+### Changelog
+
+View the changelog [CHANGELOG.md](here)
+
 ### Donations  
   
 Please consider a donation to the inventor of Pascal, Albert Molina.
