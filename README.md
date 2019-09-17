@@ -25,8 +25,7 @@ THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
 
 The source code is distributed under the `MIT software license`, see the accompanying [LICENSE](LICENSE) file or visit http://www.opensource.org/licenses/mit-license.php.
 
-This product includes software developed by the OpenSSL Project and Denis Grinyuk (https://github.com/Arvur/OpenSSL-Delphi) and some  
-cryptographic functions inspirated in code written by Ladar Levison and Marco Ferrante.
+This product includes software developed by the OpenSSL Project and Denis Grinyuk (https://github.com/Arvur/OpenSSL-Delphi) and some cryptographic functions inspirated in code written by Ladar Levison and Marco Ferrante.
 
 Go to https://www.pascalcoin.org to find out more.
 
