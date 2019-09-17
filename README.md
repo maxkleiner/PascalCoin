@@ -1,7 +1,7 @@
+![VERSION](https://img.shields.io/github/v/tag/PascalCoin/PascalCoin?sort=semver&style=for-the-badge)
 ![License](https://img.shields.io/github/license/PascalCoin/PascalCoin.svg?style=for-the-badge)
 ![DISCORD](https://img.shields.io/discord/383064643482025984.svg?label=DISCORD%20COMMUNITY&style=for-the-badge)
 ![REDDIT](https://img.shields.io/reddit/subreddit-subscribers/pascalcoin.svg?style=for-the-badge)
-
 <p align="center">
 <br /><br />
 <img width="30%" src="resources/logo.svg" />
@@ -29,6 +29,12 @@ This product includes software developed by the OpenSSL Project and Denis Grinyu
 cryptographic functions inspirated in code written by Ladar Levison and Marco Ferrante.
 
 Go to https://www.pascalcoin.org to find out more.
+
+
+## Releases
+
+[TESTNET v5](releases)
+[MAINNET v4](releases)
 
 ### Chat with us, follow us, like us
 
@@ -58,3 +64,17 @@ Please consider a donation to the inventor of Pascal, Albert Molina.
 
 **Bitcoin:** Send donations to `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
 
+### Exchanges
+
+You can trade Pascal at the following exchanges:
+
+  - [Poloniex](https://poloniex.com/exchange#btc_pasc)
+  - [VGATE (DEX)](https://x.vite.net/tradeCenter)
+  - [CoinCasso](https://coincasso.com/trade/PASC_BTC)
+  - [finexbox.com](https://www.finexbox.com/)
+  - [tokok.com](https://www.tokok.com/)
+  - [QBTC](https://www.myqbtc.com/trade)
+  - [SimpleSwap](https://simpleswap.io/)
+  - [BiteBTC](https://bitebtc.com/trade/pasc_btc)
+  - [Qtrade](https://qtrade.io/market/PASC_BTC)
+  - [Bisq (decentralised exchange)](https://markets.bisq.network/?market=pasc_btc)
