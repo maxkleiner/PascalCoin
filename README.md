@@ -33,8 +33,8 @@ Go to https://www.pascalcoin.org to find out more.
 
 ## Releases
 
-[TESTNET v5](releases)
-[MAINNET v4](releases)
+ - [**MAINNET v4**](https://github.com/PascalCoin/PascalCoin/releases/tag/4.1)
+ - [**TESTNET v5**](https://github.com/PascalCoin/PascalCoin/releases/tag/TESTNET_5.beta.1)
 
 ### Chat with us, follow us, like us
 
