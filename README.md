@@ -54,26 +54,3 @@ In case you have questions or just want to get in touch with like-minded Pascal 
 ## Changelog
 
 View the changelog [here](CHANGELOG.md)
-
-## Donations  
-  
-Please consider a donation to the inventor of Pascal, Albert Molina.
-
-**Pascal:** Send donations to account: `0-10`
-
-**Bitcoin:** Send donations to `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
-
-## Exchanges
-
-You can trade Pascal at the following exchanges:
-
-  - [Poloniex](https://poloniex.com/exchange#btc_pasc)
-  - [VGATE (DEX)](https://x.vite.net/tradeCenter)
-  - [CoinCasso](https://coincasso.com/trade/PASC_BTC)
-  - [finexbox.com](https://www.finexbox.com/)
-  - [tokok.com](https://www.tokok.com/)
-  - [QBTC](https://www.myqbtc.com/trade)
-  - [SimpleSwap](https://simpleswap.io/)
-  - [BiteBTC](https://bitebtc.com/trade/pasc_btc)
-  - [Qtrade](https://qtrade.io/market/PASC_BTC)
-  - [Bisq (decentralised exchange)](https://markets.bisq.network/?market=pasc_btc)
