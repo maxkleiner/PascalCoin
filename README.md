@@ -55,8 +55,6 @@ In case you have questions or just want to get in touch with like-minded Pascal 
 
 View the changelog [here](CHANGELOG.md)
 
-## Donations
-
 ## Donations  
   
 Consider a donation using BitCoin to `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
