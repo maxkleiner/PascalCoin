@@ -11,9 +11,9 @@
 
 ```
 Copyright (c) 2016-2019 Pascal developers based on original Albert Molina source code
-  
-THIS IS EXPERIMENTAL SOFTWARE. Use it for educational purposes only.
 ```
+
+Please use at your own risk.
 
 # Pascal - A One of a kind Cryptocurrency
 
@@ -29,11 +29,11 @@ This product includes software developed by the OpenSSL Project and Denis Grinyu
 
 Go to https://www.pascalcoin.org to find out more.
 
-
 ## Releases
 
- - [**MAINNET v4**](https://github.com/PascalCoin/PascalCoin/releases/tag/4.1)
- - [**TESTNET v5**](https://github.com/PascalCoin/PascalCoin/releases/tag/TESTNET_5.beta.1)
+You can find the core Wallet releases [here](https://github.com/PascalCoin/PascalCoin/releases).
+
+There are testnet and mainnet releases.
 
 ## Community
 
@@ -47,10 +47,16 @@ In case you have questions or just want to get in touch with like-minded Pascal 
 
 | Language      | Project Name | Type    | Version support | Link |
 | ------------- | ------------ | ------- | --------------- | ---- |
-| JavaScript    | SBX          | Library | 4    | [https://github.com/techworker/sbx](SBX) |
-| Dart          | PascalDart   | Library | 4    | [https://github.com/appditto/pascaldart](PascalDart) |
-
+| JavaScript    | SBX          | Library | 5               | [https://github.com/techworker/sbx](SBX) |
+| Dart          | PascalDart   | Library | 4               | [https://github.com/appditto/pascaldart](PascalDart) |
+| Java          | JPascalCoin  | Library | 4               | [https://github.com/davidbolet/JPascalCoin](JPascalCoin) |
 
 ## Changelog
 
 View the changelog [here](CHANGELOG.md)
+
+## Donations
+
+## Donations  
+  
+Consider a donation using BitCoin to `16K3HCZRhFUtM8GdWRcfKeaa6KsuyxZaYk`
