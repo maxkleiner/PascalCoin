@@ -17,9 +17,9 @@ Please use at your own risk.
 
 # Pascal - A One of a kind Cryptocurrency
 
-> Pascal is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities. It's the world's first blockchain independent of historical operations.
+**Pascal is an instant, zero-fee, infinitely scalable, and decentralized cryptocurrency with advanced privacy and smart contract capabilities. It's the world's first blockchain independent of historical operations.**
 
-> Pascal possesses unlimited potential.
+**Pascal possesses unlimited potential.**
 
 ## License
 
