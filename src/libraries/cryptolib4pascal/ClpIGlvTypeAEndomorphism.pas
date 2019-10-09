@@ -15,7 +15,7 @@
 
 (* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& *)
 
-unit ClpIWNafL2RMultiplier;
+unit ClpIGlvTypeAEndomorphism;
 
 {$I CryptoLib.inc}
 
@@ -23,24 +23,11 @@ interface
 
 uses
   ClpBigInteger,
-  ClpIAbstractECMultiplier;
+  ClpIGlvEndomorphism;
 
 type
-  IWNafL2RMultiplier = interface(IAbstractECMultiplier)
-
-    ['{E2A5E4EF-C092-4F83-ACCF-0FC8731FB274}']
-
-    /// <summary>
-    /// Determine window width to use for a scalar multiplication of the
-    /// given size.
-    /// </summary>
-    /// <param name="bits">
-    /// the bit-length of the scalar to multiply by
-    /// </param>
-    /// <returns>
-    /// the window size to use
-    /// </returns>
-    function GetWindowSize(bits: Int32): Int32;
+  IGlvTypeAEndomorphism = interface(IGlvEndomorphism)
+    ['{961A1588-7D37-46C5-BC67-F71063641B42}']
 
   end;
 

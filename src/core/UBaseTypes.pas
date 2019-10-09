@@ -370,9 +370,12 @@ end;
 class function TBaseType.StartsWith(const subst, target: TRawBytes): Boolean;
 var i : Integer;
 begin
+  if (Length(target)<Length(subst)) then begin
+    Exit(False);
+  end;
   i := Low(subst);
   while (i<=High(subst)) and (i<=High(target)) and (target[i]=subst[i]) do inc(i);
-  Result := (i>High(subst)) and (i>High(target));
+  Result := (i>High(subst));
 end;
 
 class procedure TBaseType.Concat(const addBytes: T32Bytes; var target: TDynRawBytes);
@@ -497,7 +500,7 @@ begin
       auxSize := auxSize + FDefaultIncrement;
     until auxSize >= newSize;
     System.SetLength(FBytes,auxSize);
-    FillByte(FBytes[actSize],auxSize - actSize +1,0);
+    FillByte(FBytes[actSize],auxSize - actSize ,0);
   end;
 end;
 

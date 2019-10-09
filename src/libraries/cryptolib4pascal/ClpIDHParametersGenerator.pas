@@ -15,19 +15,32 @@
 
 (* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& *)
 
-unit ClpIGlvMultiplier;
+unit ClpIDHParametersGenerator;
 
 {$I CryptoLib.inc}
 
 interface
 
 uses
-  ClpBigInteger,
-  ClpIAbstractECMultiplier;
+  ClpISecureRandom,
+  ClpIDHParameters;
 
 type
-  IGlvMultiplier = interface(IAbstractECMultiplier)
-    ['{F54D54F5-F544-421B-89FC-1D8058FB8F33}']
+  IDHParametersGenerator = interface(IInterface)
+    ['{ECE2C3CF-4DA4-450B-BB37-2C100BC72FF6}']
+
+    procedure Init(size, certainty: Int32; const random: ISecureRandom);
+
+    /// <summary>
+    /// <para>
+    /// which Generates the p and g values from the given parameters,
+    /// returning the DHParameters object.
+    /// </para>
+    /// <para>
+    /// Note: can take a while...
+    /// </para>
+    /// </summary>
+    function GenerateParameters(): IDHParameters;
 
   end;
 

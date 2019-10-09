@@ -128,7 +128,7 @@ Type
     class function OpType : Byte; override;
     function OperationAmount : Int64; override;
     function OperationFee : Int64; override;
-    function OperationPayload : TRawBytes; override;
+    function OperationPayload : TOperationPayload; override;
     function SignerAccount : Cardinal; override;
     procedure SignerAccounts(list : TList<Cardinal>); override;
     function IsSignerAccount(account : Cardinal) : Boolean; override;
@@ -155,7 +155,7 @@ Type
     //
     Function toString : String; Override;
     Property Data : TOpMultiOperationData read FData;
-    Function GetDigestToSign(current_protocol : Word) : TRawBytes; override;
+    Function GetDigestToSign : TRawBytes; override;
 
     function IsValidSignatureBasedOnCurrentSafeboxState(ASafeBoxTransaction : TPCSafeBoxTransaction) : Boolean; override;
   End;
@@ -318,7 +318,9 @@ var i : Integer;
   b : Byte;
 begin
   // Will save protocol info
-  w := CT_PROTOCOL_3;
+  if FProtocolVersion<CT_PROTOCOL_5 then
+    w := CT_PROTOCOL_3
+  else w := CT_PROTOCOL_5;
   stream.Write(w,SizeOf(w));
   // Save senders count
   w := Length(FData.txSenders);
@@ -328,7 +330,7 @@ begin
     stream.Write(txs.Account,SizeOf(txs.Account));
     stream.Write(txs.Amount,SizeOf(txs.Amount));
     stream.Write(txs.N_Operation,SizeOf(txs.N_Operation));
-    TStreamOp.WriteAnsiString(stream,txs.Payload);
+    SaveOperationPayloadToStream(stream,txs.Payload);
     If FSaveSignatureValue then begin
       TStreamOp.WriteAnsiString(stream,txs.Signature.r);
       TStreamOp.WriteAnsiString(stream,txs.Signature.s);
@@ -341,7 +343,7 @@ begin
     txr := FData.txReceivers[i];
     stream.Write(txr.Account,SizeOf(txr.Account));
     stream.Write(txr.Amount,SizeOf(txr.Amount));
-    TStreamOp.WriteAnsiString(stream,txr.Payload);
+    SaveOperationPayloadToStream(stream,txr.Payload);
   end;
   // Save changes info count
   w := Length(FData.changesInfo);
@@ -352,12 +354,17 @@ begin
     Stream.Write(chi.N_Operation,Sizeof(chi.N_Operation));
     b := 0;
     if (public_key in chi.Changes_type) then b:=b OR $01;
-    if (account_name in chi.changes_type) then b:=b OR $02;
-    if (account_type in chi.changes_type) then b:=b OR $04;
+    if (account_name in chi.Changes_type) then b:=b OR $02;
+    if (account_type in chi.Changes_type) then b:=b OR $04;
+    if (account_data in chi.Changes_type) then b:=b OR $08;
+
     Stream.Write(b,Sizeof(b));
     TStreamOp.WriteAccountKey(Stream,chi.New_Accountkey);
     TStreamOp.WriteAnsiString(Stream,chi.New_Name);
     Stream.Write(chi.New_Type,Sizeof(chi.New_Type));
+    if FProtocolVersion>=CT_PROTOCOL_5 then begin
+      TStreamOp.WriteAnsiString(Stream,chi.New_Data);
+    end;
     If FSaveSignatureValue then begin
       TStreamOp.WriteAnsiString(Stream,chi.Signature.r);
       TStreamOp.WriteAnsiString(Stream,chi.Signature.s);
@@ -368,7 +375,7 @@ end;
 
 function TOpMultiOperation.LoadOpFromStream(Stream: TStream; LoadExtendedData: Boolean): Boolean;
 var i : Integer;
-  w : Word;
+  w, LSavedProtocol : Word;
   txs : TMultiOpSender;
   txr : TMultiOpReceiver;
   chi : TMultiOpChangeInfo;
@@ -394,8 +401,8 @@ begin
   Result := False;
   Try
     // Read protocol info
-    stream.Read(w,SizeOf(w));
-    If w<>CT_PROTOCOL_3 then Raise Exception.Create('Invalid protocol found');
+    stream.Read(LSavedProtocol,SizeOf(LSavedProtocol));
+    If (Not (LSavedProtocol in [CT_PROTOCOL_3,CT_PROTOCOL_5])) then Raise Exception.Create('Invalid protocol found '+IntToStr(LSavedProtocol));
     // Load senders
     stream.Read(w,SizeOf(w));
     If w>CT_MAX_MultiOperation_Senders then Raise Exception.Create('Max senders');
@@ -406,7 +413,7 @@ begin
         stream.Read(txs.Account,SizeOf(txs.Account));
         stream.Read(txs.Amount,SizeOf(txs.Amount));
         stream.Read(txs.N_Operation,SizeOf(txs.N_Operation));
-        TStreamOp.ReadAnsiString(stream,txs.Payload);
+        LoadOperationPayloadFromStream(stream,txs.Payload);
         TStreamOp.ReadAnsiString(stream,txs.Signature.r);
         TStreamOp.ReadAnsiString(stream,txs.Signature.s);
         //
@@ -422,7 +429,7 @@ begin
         txr := CT_TMultiOpReceiver_NUL;
         stream.Read(txr.Account,SizeOf(txr.Account));
         stream.Read(txr.Amount,SizeOf(txr.Amount));
-        TStreamOp.ReadAnsiString(stream,txr.Payload);
+        LoadOperationPayloadFromStream(stream,txr.Payload);
         //
         txreceivers[i] := txr;
       end;
@@ -441,11 +448,17 @@ begin
         if (b AND $01)=$01 then chi.changes_type:=chi.changes_type + [public_key];
         if (b AND $02)=$02 then chi.changes_type:=chi.changes_type + [account_name];
         if (b AND $04)=$04 then chi.changes_type:=chi.changes_type + [account_type];
+        if (b AND $08)=$08 then chi.changes_type:=chi.changes_type + [account_data];
         // Check
-        if (b AND $F8)<>0 then Exit;
+        if (LSavedProtocol=CT_PROTOCOL_3) and ((b AND $F8)<>0) then Exit;
+        if (b AND $F0)<>0 then Exit;
         TStreamOp.ReadAccountKey(Stream,chi.New_Accountkey);
         TStreamOp.ReadAnsiString(Stream,chi.New_Name);
         Stream.Read(chi.New_Type,Sizeof(chi.New_Type));
+        if (LSavedProtocol<>CT_PROTOCOL_3) then begin
+          TStreamOp.ReadAnsiString(Stream,chi.New_Data);
+        end;
+
         TStreamOp.ReadAnsiString(Stream,chi.Signature.r);
         TStreamOp.ReadAnsiString(Stream,chi.Signature.s);
         //
@@ -488,7 +501,7 @@ begin
   Result := False;
   // Do check it!
   Try
-    ophtosign := GetDigestToSign(AccountTransaction.FreezedSafeBox.CurrentProtocol);
+    ophtosign := GetDigestToSign;
     // Tx verification
     For i:=Low(FData.txSenders) to High(FData.txSenders) do begin
       acc := AccountTransaction.Account(FData.txSenders[i].Account);
@@ -586,8 +599,8 @@ begin
       errors := Format('Invalid amount %d (0 or max: %d)',[txs.Amount,CT_MaxTransactionAmount]);
       Exit;
     end;
-    if (length(txs.Payload)>CT_MaxPayloadSize) then begin
-      errors := 'Invalid Payload size:'+inttostr(length(txs.Payload))+' (Max: '+inttostr(CT_MaxPayloadSize)+')';
+    if (length(txs.Payload.payload_raw)>CT_MaxPayloadSize) then begin
+      errors := 'Invalid Payload size:'+inttostr(length(txs.Payload.payload_raw))+' (Max: '+inttostr(CT_MaxPayloadSize)+')';
       Exit;
     end;
     //
@@ -623,8 +636,8 @@ begin
       errors := Format('Invalid amount %d (0 or max: %d)',[txr.Amount,CT_MaxTransactionAmount]);
       Exit;
     end;
-    if (length(txr.Payload)>CT_MaxPayloadSize) then begin
-      errors := 'Invalid Payload size:'+inttostr(length(txr.Payload))+' (Max: '+inttostr(CT_MaxPayloadSize)+')';
+    if (length(txr.Payload.payload_raw)>CT_MaxPayloadSize) then begin
+      errors := 'Invalid Payload size:'+inttostr(length(txr.Payload.payload_raw))+' (Max: '+inttostr(CT_MaxPayloadSize)+')';
       Exit;
     end;
     //
@@ -677,6 +690,18 @@ begin
         Exit;
       end;
     end;
+    // Account Data protection: (PIP-0024)
+    if (account_data in chi.Changes_type) then begin
+      if Length(chi.New_Data)>CT_MaxAccountDataSize then begin
+        errors := 'New data length ('+IntToStr(Length(chi.New_data))+') > '+IntToStr(CT_MaxAccountDataSize);
+        Exit;
+      end;
+    end else begin
+      if Length(chi.New_Data)<>0 then begin
+        errors := 'New data must be null when no data change';
+        Exit;
+      end;
+    end;
     If (chi.changes_type=[]) then begin
       errors := 'No change';
       Exit;
@@ -705,12 +730,16 @@ begin
       changer.accountInfo.price := 0;
       changer.accountInfo.account_to_pay := 0;
       changer.accountInfo.new_publicKey := CT_TECDSA_Public_Nul;
+      changer.accountInfo.hashed_secret := Nil;
     end;
     If (account_name in chi.Changes_type) then begin
       changer.name := chi.New_Name;
     end;
     If (account_type in chi.Changes_type) then begin
       changer.account_type := chi.New_Type;
+    end;
+    If (account_data in chi.Changes_type) then begin
+      changer.account_data := chi.New_Data;
     end;
     If Not AccountTransaction.UpdateAccountInfo(
            AccountPreviousUpdatedBlock,
@@ -755,7 +784,7 @@ begin
   If Not key.HasPrivateKey then begin
     exit;
   end;
-  raw := GetDigestToSign(current_protocol);
+  raw := GetDigestToSign;
   Try
     _sign := TCrypto.ECDSASign(key.PrivateKey,raw);
   Except
@@ -796,9 +825,9 @@ begin
   Result := FTotalFee;
 end;
 
-function TOpMultiOperation.OperationPayload: TRawBytes;
+function TOpMultiOperation.OperationPayload: TOperationPayload;
 begin
-  SetLength(Result,0);
+  Result := CT_TOperationPayload_NUL;
 end;
 
 function TOpMultiOperation.SignerAccount: Cardinal;
@@ -998,7 +1027,7 @@ begin
     // check valid Change type
     for ct:=Low(TOpChangeAccountInfoType) to High(TOpChangeAccountInfoType) do begin
       case ct of
-        public_key,account_name,account_type : ; // Allowed
+        public_key,account_name,account_type,account_data : ; // Allowed
       else
         if (ct in changes[i].Changes_type) then begin
           Exit; // Not allowed multioperation change type
@@ -1078,7 +1107,7 @@ begin
      TAccountComp.FormatMoney(FTotalFee)]);
 end;
 
-function TOpMultiOperation.GetDigestToSign(current_protocol : Word): TRawBytes;
+function TOpMultiOperation.GetDigestToSign: TRawBytes;
 Var ms : TMemoryStream;
   rb : TRawBytes;
   old : Boolean;
@@ -1093,7 +1122,7 @@ begin
     finally
       FSaveSignatureValue:=old;
     end;
-    if (current_protocol<=CT_PROTOCOL_3) then begin
+    if (ProtocolVersion<=CT_PROTOCOL_3) then begin
       ms.Position := 0;
       SetLength(Result,ms.Size);
       ms.ReadBuffer(Result[Low(Result)],ms.Size);

@@ -95,6 +95,10 @@ type
     class procedure Fill(const buf: TCryptoLibUInt32Array; from, &to: Int32;
       filler: UInt32); overload; static;
 
+    class procedure ZeroFill(const buf: TCryptoLibByteArray); static;
+
+    class function NoZeroes(const data: TCryptoLibByteArray): Boolean; static;
+
   end;
 
 implementation
@@ -112,6 +116,21 @@ begin
       [from, &to]);
   end;
   Result := newLength;
+end;
+
+class function TArrayUtils.NoZeroes(const data: TCryptoLibByteArray): Boolean;
+var
+  i: Int32;
+begin
+  Result := True;
+  for i := System.Low(data) to System.High(data) do
+  begin
+    if data[i] = 0 then
+    begin
+      Result := False;
+      Exit;
+    end;
+  end;
 end;
 
 class function TArrayUtils.Concatenate(const A, B: TCryptoLibByteArray)
@@ -171,7 +190,7 @@ class function TArrayUtils.AreEqual(const A, B: TCryptoLibByteArray): Boolean;
 begin
   if System.Length(A) <> System.Length(B) then
   begin
-    Result := false;
+    Result := False;
     Exit;
   end;
 
@@ -196,7 +215,7 @@ class function TArrayUtils.AreEqual(const A, B: TCryptoLibInt32Array): Boolean;
 begin
   if System.Length(A) <> System.Length(B) then
   begin
-    Result := false;
+    Result := False;
     Exit;
   end;
 
@@ -255,31 +274,45 @@ end;
 class procedure TArrayUtils.Fill(const buf: TCryptoLibByteArray;
   from, &to: Int32; filler: Byte);
 begin
-  System.FillChar(buf[from], (&to - from) * System.SizeOf(Byte), filler);
+  if buf <> Nil then
+  begin
+    System.FillChar(buf[from], (&to - from) * System.SizeOf(Byte), filler);
+  end;
 end;
 
 class procedure TArrayUtils.Fill(const buf: TCryptoLibInt32Array;
   from, &to: Int32; filler: Int32);
 begin
-  while from < &to do
+  if buf <> Nil then
   begin
-    buf[from] := filler;
-    System.Inc(from);
+    while from < &to do
+    begin
+      buf[from] := filler;
+      System.Inc(from);
+    end;
   end;
 end;
 
 class procedure TArrayUtils.Fill(const buf: TCryptoLibUInt32Array;
   from, &to: Int32; filler: UInt32);
 begin
-{$IFDEF FPC}
-  System.FillDWord(buf[from], (&to - from), filler);
-{$ELSE}
-  while from < &to do
+  if buf <> Nil then
   begin
-    buf[from] := filler;
-    System.Inc(from);
-  end;
+{$IFDEF FPC}
+    System.FillDWord(buf[from], (&to - from), filler);
+{$ELSE}
+    while from < &to do
+    begin
+      buf[from] := filler;
+      System.Inc(from);
+    end;
 {$ENDIF}
+  end;
+end;
+
+class procedure TArrayUtils.ZeroFill(const buf: TCryptoLibByteArray);
+begin
+  TArrayUtils.Fill(buf, 0, System.Length(buf), Byte(0));
 end;
 
 class function TArrayUtils.GetArrayHashCode(const data

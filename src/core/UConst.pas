@@ -54,12 +54,12 @@ Const
 
   CT_FirstReward: UInt64 = 1000000; // 4 decimals... First reward = 100,0000
   CT_MinReward: UInt64 = 10000; // 4 decimals... Min reward = 1,0000
-  CT_NewLineRewardDecrease: Cardinal = {$IFDEF PRODUCTION}210240{$ELSE}{$IFDEF TESTNET}20000{$ENDIF}{$ENDIF};
+  CT_NewLineRewardDecrease: Cardinal = {$IFDEF PRODUCTION}210240{$ELSE}{$IFDEF TESTNET}10000{$ENDIF}{$ENDIF};
 
-  CT_WaitNewBlocksBeforeTransaction = 100;
+  CT_WaitNewBlocksBeforeTransaction = {$IFDEF PRODUCTION}100{$ELSE}{$IFDEF TESTNET}10{$ENDIF}{$ENDIF};
 
-  CT_RecoverFoundsWaitInactiveCount = 420480;  // After 4 years... if an account has no operations, money will be a reward for a miner!
-  CT_MaxFutureBlocksLockedAccount = 105120; // Maximum future blocks an account can be locked
+  CT_RecoverFoundsWaitInactiveCount = {$IFDEF PRODUCTION}420480{$ELSE}{$IFDEF TESTNET}1000{$ENDIF}{$ENDIF};  // After 4 years... if an account has no operations, money will be a reward for a miner!
+  CT_MaxFutureBlocksLockedAccount = {$IFDEF PRODUCTION}105120{$ELSE}{$IFDEF TESTNET}CT_RecoverFoundsWaitInactiveCount{$ENDIF}{$ENDIF}; // Maximum future blocks an account can be locked
 
   CT_MaxTransactionAmount = 1000000000000; // ... can be deleted
   CT_MaxTransactionFee = 100000000;
@@ -75,6 +75,8 @@ Const
   CT_CompactTarget_Reset_v4: Cardinal = // First compact target of block if using Protocol 4 and RandomHash is Active
     {$IFDEF PRODUCTION}$16000000{$ELSE}$08000000{$ENDIF};
   {$ENDIF}
+  CT_MinCompactTarget_v5: Cardinal = // Minimum compact target of block if using Protocol 5 or higher
+    {$IFDEF PRODUCTION}$12000000{$ELSE}{$IFDEF TESTNET}$10000000{$ELSE}{$ENDIF}{$ENDIF};
 
 
   CT_CalcNewTargetBlocksAverage: Cardinal = 100;
@@ -116,16 +118,16 @@ Const
   CT_PROTOCOL_3 = 3;
   CT_PROTOCOL_4 = 4;
   CT_PROTOCOL_5 = 5;
-  CT_BUILD_PROTOCOL = CT_PROTOCOL_4;
+  CT_BUILD_PROTOCOL = CT_PROTOCOL_5;
 
-  CT_BlockChain_Protocol_Available: Word = 4; // Protocol 4 flag
-  CT_Protocol_Upgrade_v2_MinBlock = {$IFDEF PRODUCTION}115000{$ELSE}47{$ENDIF};
-  CT_Protocol_Upgrade_v3_MinBlock = {$IFDEF PRODUCTION}210000{$ELSE}48{$ENDIF};
-  CT_Protocol_Upgrade_v4_MinBlock = {$IFDEF PRODUCTION}260000{$ELSE}49{$ENDIF};
-  CT_Protocol_Upgrade_v5_MinBlock = {$IFDEF PRODUCTION}999999999{$ELSE}50{$ENDIF}; // TODO Need define v5 for production!
+  CT_BlockChain_Protocol_Available: Word = 5; // Protocol 5 flag
+  CT_Protocol_Upgrade_v2_MinBlock = {$IFDEF PRODUCTION}115000{$ELSE}50{$ENDIF};
+  CT_Protocol_Upgrade_v3_MinBlock = {$IFDEF PRODUCTION}210000{$ELSE}250{$ENDIF};
+  CT_Protocol_Upgrade_v4_MinBlock = {$IFDEF PRODUCTION}260000{$ELSE}400{$ENDIF};
+  CT_Protocol_Upgrade_v5_MinBlock = {$IFDEF PRODUCTION}999999999{$ELSE}500{$ENDIF}; // TODO Need define v5 for production!
 
 
-  CT_MagicNetIdentification = {$IFDEF PRODUCTION}$0A043580{$ELSE}$05000001{$ENDIF}; // Unix timestamp 168048000 ... It's Albert birthdate!
+  CT_MagicNetIdentification = {$IFDEF PRODUCTION}$0A043580{$ELSE}$05000003{$ENDIF}; // Unix timestamp 168048000 ... It's Albert birthdate!
 
   CT_NetProtocol_Version: Word = $0009; // Version 4.0.2 Will allow only net protocol 9
   // IMPORTANT NOTE!!!
@@ -136,7 +138,9 @@ Const
 
   CT_SafeBoxBankVersion : Word = 3; // Protocol 2 upgraded safebox version from 2 to 3
 
-  CT_MagicIdentificator: String = {$IFDEF PRODUCTION}'PascalCoin'{$ELSE}'PascalCoinTESTNET_5.Beta.1'{$ENDIF}; //
+  CT_MagicIdentificator: String = {$IFDEF PRODUCTION}'PascalCoin'{$ELSE}'PascalCoinTESTNET_5.Beta.3'{$ENDIF}; //
+
+  CT_PascalCoin_Data_Folder : String = {$IFDEF PRODUCTION}'PascalCoin'{$ELSE}'PascalCoin_TESTNET_5.Beta.3'{$ENDIF}; //
 
   CT_PseudoOp_Reward = $0;
   // Value of Operations type in Protocol 1
@@ -156,8 +160,10 @@ Const
 
   CT_Protocol_v3_PIP11_Percent = 20; // PIP-0011 20% Percent proposed and voted by PIP-0011
 
-  CT_Hardcoded_RandomHash_Table_Filename = 'HardcodedRH_63300.randomhash';
-  CT_Hardcoded_RandomHash_Table_HASH = '1908BAB3D3A2EF04ECA9F0AEE9E2BD6423D2A921B5880A1CBA8A748D11424418';
+  {$IFDEF PRODUCTION}
+  CT_Hardcoded_RandomHash_Table_Filename = 'HardcodedRH_75800.randomhash';
+  CT_Hardcoded_RandomHash_Table_HASH = '0A56291E8368AC855227B67A2F6CBEEFD2DB4CAE3CB8A473A7F6663C63368D0E';
+  {$ENDIF}
 
   CT_PseudoOpSubtype_Miner                = 1;
   CT_PseudoOpSubtype_Developer            = 2;
@@ -167,6 +173,9 @@ Const
   CT_OpSubtype_BuyTransactionBuyer        = 13;
   CT_OpSubtype_BuyTransactionTarget       = 14;
   CT_OpSubtype_BuyTransactionSeller       = 15;
+  CT_OpSubtype_SwapTransactionSender      = 16;
+  CT_OpSubtype_SwapTransactionTarget      = 17;
+  CT_OpSubtype_SwapTransactionReceiver    = 18;
   CT_OpSubtype_ChangeKey                  = 21;
   CT_OpSubtype_Recover                    = 31;
   CT_OpSubtype_ListAccountForPublicSale   = 41;
@@ -186,7 +195,7 @@ Const
   CT_OpSubtype_Data_Signer                = 103;
   CT_OpSubtype_Data_Receiver              = 104;
 
-  CT_ClientAppVersion : String = {$IFDEF PRODUCTION}'4.0.3.2'{$ELSE}{$IFDEF TESTNET}'TESTNET 5.Beta.1'{$ELSE}{$ENDIF}{$ENDIF};
+  CT_ClientAppVersion : String = {$IFDEF PRODUCTION}'4.1'{$ELSE}{$IFDEF TESTNET}'TESTNET 5.Beta.3'{$ELSE}{$ENDIF}{$ENDIF};
 
   CT_Discover_IPs = {$IFDEF PRODUCTION}'bpascal1.dynamic-dns.net;bpascal2.dynamic-dns.net;pascalcoin1.dynamic-dns.net;pascalcoin2.dynamic-dns.net;pascalcoin1.dns1.us;pascalcoin2.dns1.us;pascalcoin1.dns2.us;pascalcoin2.dns2.us'
                     {$ELSE}'pascaltestnet1.dynamic-dns.net;pascaltestnet2.dynamic-dns.net;pascaltestnet1.dns1.us;pascaltestnet2.dns1.us'{$ENDIF};

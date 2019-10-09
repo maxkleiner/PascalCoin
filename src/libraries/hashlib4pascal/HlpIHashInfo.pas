@@ -41,7 +41,7 @@ type
     ['{DD5E0FE4-3573-4051-B7CF-F23BABE982D8}']
 
     function GetKey(): THashLibByteArray;
-    procedure SetKey(const value: THashLibByteArray);
+    procedure SetKey(const AValue: THashLibByteArray);
     property Key: THashLibByteArray read GetKey write SetKey;
     function GetKeyLength(): TNullableInteger;
     property KeyLength: TNullableInteger read GetKeyLength;
@@ -64,8 +64,17 @@ type
     ['{666D652C-E4E5-4C72-B09F-145495D1A95D}']
   end;
 
+  IPBKDF_Scrypt = Interface(IKDF)
+    ['{D1AD2681-FBDB-41EF-B8F5-72E3F5872D27}']
+  end;
+
+  IPBKDF_ScryptNotBuildIn = Interface(IPBKDF_Scrypt)
+    ['{7DD70C4D-FBF6-4629-B587-C6A7CC047D35}']
+  end;
+
   IHMAC = Interface(IWithKey)
     ['{A6D4DCC6-F6C3-4110-8CA2-FBE85227676E}']
+    procedure Clear();
   end;
 
   IHMACNotBuildIn = Interface(IHMAC)
@@ -95,7 +104,7 @@ type
   IXOF = Interface(IHash)
     ['{944ED7F0-D033-4489-A5DD-9C83353F23F0}']
     function GetXOFSizeInBits: UInt32;
-    procedure SetXOFSizeInBits(a_xof_size_in_bits: UInt32);
+    procedure SetXOFSizeInBits(AXofSizeInBits: UInt32);
     property XOFSizeInBits: UInt32 read GetXOFSizeInBits write SetXOFSizeInBits;
   end;
 

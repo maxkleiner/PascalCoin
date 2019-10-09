@@ -31,6 +31,7 @@ uses
 { CONSTANTS }
 
 const
+  EPSILON : Double = 0.00001;
   MillisPerSecond = 1000;
   MillisPerMinute = 60 * MillisPerSecond;
   MillisPerHour = 60 * MillisPerMinute;
@@ -44,14 +45,17 @@ const
 
 
 function String2Hex(const Buffer: String): String;
-{$IFDEF UNITTESTS}
 function Hex2Bytes(const AHexString: String): TBytes; overload;
 function TryHex2Bytes(const AHexString: String; out ABytes : TBytes): boolean; overload;
 function Bytes2Hex(const ABytes: TBytes; AUsePrefix : boolean = false) : String;
-{$ENDIF}
 function BinStrComp(const Str1, Str2 : String): Integer; // Binary-safe StrComp replacement. StrComp will return 0 for when str1 and str2 both start with NUL character.
 function BytesCompare(const ABytes1, ABytes2: TBytes): integer;
-function BytesEqual(const ABytes1, ABytes2 : TBytes) : boolean; inline;
+function BytesEqual(const ABytes1, ABytes2 : TBytes) : boolean; overload; inline;
+function BytesEqual(const ABytes1, ABytes2 : TBytes; AFrom, ALength : UInt32) : boolean; overload; inline;
+function ContencateBytes(const AChunk1, AChunk2: TBytes): TBytes; inline;
+function SetLastDWordLE(const ABytes: TBytes; AValue: UInt32): TBytes;
+function GetLastDWordLE(const ABytes: TBytes) : UInt32;
+function GetDWordLE(const ABytes: TBytes; AOffset : Integer) : UInt32;
 function IIF(const ACondition: Boolean; const ATrueResult, AFalseResult: Cardinal): Cardinal; overload;
 function IIF(const ACondition: Boolean; const ATrueResult, AFalseResult: Integer): Integer; overload;
 function IIF(const ACondition: Boolean; const ATrueResult, AFalseResult: Int64): Int64; overload;
@@ -63,6 +67,9 @@ function IIF(const ACondition: Boolean; const ATrueResult, AFalseResult: variant
 function ClipValue( AValue, MinValue, MaxValue: Integer) : Integer;
 function MinValue(const AArray : array of Cardinal) : Cardinal;
 function MaxValue(const AArray : array of Cardinal) : Cardinal;
+function RoundEx(const AInput: Single; APlaces: Integer): Single; overload;
+function RoundEx(const AInput: Double; APlaces: Integer): Double; overload;
+function RoundEx(const AInput: Currency; APlaces: integer): Currency; overload;
 {$IFDEF FPC}
 function GetSetName(const aSet:PTypeInfo; Value: Integer):string;
 function GetSetValue(const aSet:PTypeInfo; Name: String): Integer;
@@ -389,13 +396,21 @@ type
       class function NumericBetweenExclusive(const AValue, Lower, Upper : Variant) : boolean;
   end;
 
-  { TFileStreamHelper }
+  { TStreamHelper }
 
-  TFileStreamHelper = class helper for TFileStream
+  TStreamHelper = class helper for TStream
     {$IFNDEF FPC}
     procedure WriteString(const AString : String);
     {$ENDIF}
+    function ReadBytes(ACount : Int32) : TBytes; inline;
   end;
+
+  { TMemoryStreamHelper }
+
+   TMemoryStreamHelper = class helper for TMemoryStream
+     function ToBytes(ASize : Integer = -1) : TBytes; inline;
+   end;
+
 
   { TFileTool }
 
@@ -409,6 +424,45 @@ type
     //returns number of cores: a computer with two hyperthreaded cores will report 4
     class function GetLogicalCPUCount(): Int32; static;
   end;
+
+
+  { TStatistics }
+
+  { NOTE: this is a running stats keeper that does not keep item set, thus
+    uses estimations which can diverge from real values }
+  TStatistics = record
+  private
+    FCount : UInt32; // Number of items in the analysis
+    FTotal : Double; // Total of data
+    FTotal2 : Double; // Sum of sqaures of data
+//    FProduct : Double; // Product of data
+    FRecip : Double; // Sum of reciprocals of data
+    FMin : Double;  // Min datum
+    FMax : Double;  // Min datum
+  public
+    property SampleCount : UInt32 read FCount;
+    property Sum : Double read FTotal;
+    property SquaredSum : Double read FTotal2;
+//    property Product : Double read FProduct;
+    property ReciprocalSum : Double read FRecip;
+    property Minimum : Double read FMin;
+    property Maximum : Double read FMax;
+    procedure Reset;
+    function Mean : Double; inline;
+    function PopulationVariance : Double; inline;
+    function PopulationStandardDeviation : Double; inline;
+    function PopulationVariationCoefficient : Double; inline;
+ //   function GeometricMean : Double; inline;
+    function HarmonicMean : Double; inline;
+    function MinimumError : Double; inline;
+    function MaximumError : Double; inline;
+    function SampleVariance : Double; inline;
+    function SampleStandardDeviation : Double; inline;
+    function SampleVariationCoefficient : Double; inline;
+    procedure AddDatum(ADatum : Double); overload; inline;
+    procedure AddDatum(ADatum : Double; ANumTimes : UInt32); overload;
+    procedure RemoveDatum(ADatum : Double);
+end;
 
 resourcestring
   sNotImplemented = 'Not implemented';
@@ -462,7 +516,6 @@ begin
     Result := AnsiLowerCase(Result + IntToHex(Ord(Buffer[n]), 2));
 end;
 
-{$IFDEF UNITTESTS}
 function Hex2Bytes(const AHexString: String): TBytes;
 begin
   if NOT TryHex2Bytes(AHexString, Result) then
@@ -496,10 +549,14 @@ begin
   SetLength(ABytes, LHexLength DIV 2);
   P := @ABytes[Low(ABytes)];
   LHexString := LowerCase(AHexString);
+  {$IFDEF FPC}
   LHexIndex := HexToBin(PAnsiChar(@LHexString[LHexStart]), P, System.Length(ABytes));
+  {$ELSE}
+  LHexIndex := HexToBin(@LHexString[LHexStart],0,ABytes,0,Length(ABytes));
+  {$ENDIF}
   Result := (LHexIndex = (LHexLength DIV 2));
 end;
-{$ENDIF}
+
 
 function Bytes2Hex(const ABytes: TBytes; AUsePrefix : boolean = false) : String;
 var
@@ -580,15 +637,76 @@ begin
 end;
 
 function BytesEqual(const ABytes1, ABytes2 : TBytes) : boolean;
+begin
+  Result := BytesEqual(ABytes1, ABytes2, 0, Length(ABytes1));
+end;
+
+function BytesEqual(const ABytes1, ABytes2 : TBytes; AFrom, ALength : UInt32) : boolean;
 var ABytes1Len, ABytes2Len : Integer;
 begin
+  if ALength = 0 then
+    Exit(False);
   ABytes1Len := Length(ABytes1);
   ABytes2Len := Length(ABytes2);
-  if (ABytes1Len <> ABytes2Len) OR (ABytes1Len = 0) then
-    Result := False
-  else
-    Result := CompareMem(@ABytes1[0], @ABytes2[0], ABytes1Len);
+  if ((ABytes1Len - AFrom) < ALength) OR ((ABytes2Len - AFrom) < ALength ) then
+    Exit(False);
+  Result := CompareMem(@ABytes1[AFrom], @ABytes2[AFrom], ALength);
 end;
+
+function ContencateBytes(const AChunk1, AChunk2: TBytes): TBytes;
+begin
+  SetLength(Result, Length(AChunk1) + Length(AChunk2));
+  Move(AChunk1[0], Result[0], Length(AChunk1));
+  Move(AChunk2[0], Result[Length(AChunk1)], Length(AChunk2));
+end;
+
+function SetLastDWordLE(const ABytes: TBytes; AValue: UInt32): TBytes;
+var
+  ABytesLength : Integer;
+begin
+  // Clone the original header
+  Result := Copy(ABytes);
+
+  // If digest not big enough to contain a nonce, just return the clone
+  ABytesLength := Length(ABytes);
+  if ABytesLength < 4 then
+    exit;
+
+  // Overwrite the nonce in little-endian
+  Result[ABytesLength - 4] := Byte(AValue);
+  Result[ABytesLength - 3] := (AValue SHR 8) AND 255;
+  Result[ABytesLength - 2] := (AValue SHR 16) AND 255;
+  Result[ABytesLength - 1] := (AValue SHR 24) AND 255;
+end;
+
+function GetLastDWordLE(const ABytes: TBytes) : UInt32;
+var LLen : Integer;
+begin
+  LLen := Length(ABytes);
+  if LLen < 4 then
+   raise EArgumentException.Create('ABytes needs to be at least 4 bytes');
+
+  // Last 4 bytes are nonce (LE)
+  Result := ABytes[LLen - 4] OR
+           (ABytes[LLen - 3] SHL 8) OR
+           (ABytes[LLen - 2] SHL 16) OR
+           (ABytes[LLen - 1] SHL 24);
+end;
+
+function GetDWordLE(const ABytes: TBytes; AOffset : Integer) : UInt32;
+var LLen : Integer;
+begin
+  LLen := Length(ABytes);
+  if LLen < AOffset+3 then
+   raise EArgumentException.Create('ABytes[AOffset] needs at least 4 more bytes');
+
+  // Last 4 bytes are nonce (LE)
+  Result := ABytes[AOffset + 0] OR
+           (ABytes[AOffset + 1] SHL 8) OR
+           (ABytes[AOffset + 2] SHL 16) OR
+           (ABytes[AOffset + 3] SHL 24);
+end;
+
 
 function IIF(const ACondition: Boolean; const ATrueResult, AFalseResult: Cardinal): Cardinal;
 begin
@@ -685,6 +803,59 @@ begin
       Result := AArray[i];
   end;
 end;
+
+function RoundEx(const AInput: Single; APlaces: Integer): Single;
+var
+  k: Single;
+begin
+  if APlaces = 0 then begin
+    Result := Round(AInput);
+  end else begin
+    if APlaces > 0 then begin
+      k := Power(10, APlaces);
+      Result := Round(AInput * k) / k;
+    end else begin
+      k := Power(10, (APlaces*-1));
+      Result := Round(AInput / k) * k;
+    end;
+  end;
+end;
+
+function RoundEx(const AInput: Double; APlaces: Integer): Double;
+var
+  k: Double;
+begin
+  if APlaces = 0 then begin
+    Result := Round(AInput);
+  end else begin
+    if APlaces > 0 then begin
+      k := Power(10, APlaces);
+      Result := Round(AInput * k) / k;
+    end else begin
+      k := Power(10, (APlaces*-1));
+      Result := Round(AInput / k) * k;
+    end;
+  end;
+end;
+
+function RoundEx(const AInput: Currency; APlaces: integer): Currency;
+var
+  k: Currency;
+begin
+  if APlaces = 0 then begin
+    Result := Round(AInput);
+  end else begin
+    if APlaces > 0 then begin
+      k := Power(10, APlaces);
+      Result := Round(AInput * k) / k;
+    end else begin
+      k := Power(10, (APlaces*-1));
+      Result := Round(AInput / k) * k;
+    end;
+  end;
+end;
+
+
 
 {$IFDEF FPC}
 
@@ -1911,13 +2082,34 @@ begin
   Result := (lowercmp = 1) AND (uppercmp = -1);
 end;
 
-{ TFileStreamHelper }
+{ TStreamHelper }
+
 {$IFNDEF FPC}
-procedure TFileStreamHelper.WriteString(const AString : String);
+procedure TStreamHelper.WriteString(const AString : String);
 begin
    Self.WriteBuffer(Pointer(AString)^, Length(AString));
 end;
 {$ENDIF}
+
+function TStreamHelper.ReadBytes(ACount : Int32) : TBytes;
+begin
+  SetLength(Result, ACount);
+  Read(Result, ACount);
+end;
+
+{ TMemoryStreamHelper }
+
+function TMemoryStreamHelper.ToBytes(ASize : Integer = -1) : TBytes;
+var
+  LTakeAmount : Integer;
+begin
+  if ASize < 0 then
+    LTakeAmount := Self.Size
+  else
+    LTakeAmount := ASize;
+  SetLength(Result, LTakeAmount);
+  Move(Self.Memory^, Result[0], LTakeAmount);
+end;
 
 { TFileTool }
 
@@ -2002,6 +2194,169 @@ begin
   Result := 1;
 {$ENDIF WINDOWS}
 {$ENDIF FPC}
+end;
+
+{ TStatistics }
+
+function TStatistics.Mean : Double;
+begin
+  Result := NaN;
+  if SampleCount > 0 then
+    Result := Sum / SampleCount;
+end;
+
+function TStatistics.PopulationStandardDeviation : Double;
+begin
+  Result := Sqrt(PopulationVariance);
+end;
+
+function TStatistics.PopulationVariance : Double;
+var LSum : Double;
+begin
+  LSum := Sum;
+  if SampleCount > 2 then
+    Result := ((SampleCount * SquaredSum) - (LSum * LSum)) / (SampleCount * SampleCount)
+  else
+    Result := Nan;
+end;
+
+function TStatistics.PopulationVariationCoefficient : Double;
+begin
+  if SampleCount > 0 then
+    Result :=  (PopulationVariance / Mean) * 100.0
+  else
+    Result := Nan;
+end;
+
+(*function TStatistics.GeometricMean : Double;
+begin
+  if SampleCount > 0 then
+    Result :=  Power(Product, 1.0 / SampleCount)
+  else
+    Result := Nan;
+end;*)
+
+function TStatistics.HarmonicMean : Double;
+begin
+  if SampleCount > 0 then
+    Result := SampleCount / ReciprocalSum
+  else
+    Result := Nan;
+end;
+
+function TStatistics.MinimumError : Double;
+begin
+  if (Mean * Mean) > (EPSILON * EPSILON) then
+    Result := 100.0 * (Minimum - Mean) / Mean
+  else
+    Result := Nan;
+end;
+
+function TStatistics.MaximumError : Double;
+begin
+  if (Mean * Mean) > (EPSILON * EPSILON) then
+    Result := 100.0 * (Maximum - Mean) / Mean
+  else
+    Result := Nan;
+end;
+
+function TStatistics.SampleStandardDeviation : Double;
+begin
+  if SampleCount >= 2 then
+    Result := Sqrt(SampleVariance)
+  else
+    Result := Nan;
+end;
+
+function TStatistics.SampleVariance : Double;
+var LSum : Double;
+begin
+  LSum := Sum;
+  if SampleCount > 2 then
+    Result := ((SampleCount * SquaredSum) - (LSum * LSum)) / ((SampleCount - 1) * (SampleCount - 1))
+  else
+    Result := Nan;
+end;
+
+function TStatistics.SampleVariationCoefficient : Double;
+begin
+  if SampleCount >= 2 then
+    Result := 100 * (SampleStandardDeviation / Mean)
+  else
+    Result := Nan;
+end;
+
+procedure TStatistics.Reset;
+begin
+  FCount := 0;
+  FMin := 0.0;
+  FMax := 0.0;
+  FTotal := 0.0;
+  FTotal2 := 0.0;
+  FRecip := 0.0;
+  //FProduct := 1.0;
+end;
+
+procedure TStatistics.AddDatum(ADatum : Double);
+begin
+  if FCount = 0 then
+    Reset;
+  Inc(FCount);
+  FTotal := FTotal + ADatum;
+  FTotal2 := FTotal2 + ADatum * ADatum;
+  if IsNaN(FRecip) OR ((ADatum * ADatum) < (EPSILON * EPSILON)) then
+    FRecip := double.NaN
+  else
+    FRecip := FRecip + (1.0 / ADatum);
+  //FProduct := FProduct * ADatum;
+  if (FCount = 1) then begin
+    // first data so set _min/_max
+    FMin := ADatum;
+    FMax := ADatum;
+  end else begin
+    // adjust _min/_max boundaries if necessary
+    if (ADatum < FMin) then
+      FMin := ADatum;
+    if (ADatum > FMax) then
+      FMax := ADatum;
+  end;
+end;
+
+procedure TStatistics.AddDatum(ADatum : Double; ANumTimes : UInt32);
+begin
+  if FCount = 0 then
+    Reset;
+  FCount := FCount + ANumTimes;
+  FTotal := FTotal + ADatum * ANumTimes;
+  FTotal2 := FTotal2 + ADatum * ADatum * ANumTimes;
+  if IsNaN(FRecip) OR ((ADatum * ADatum) < (EPSILON * EPSILON)) then
+    FRecip := NaN
+  else
+    FRecip := FRecip + (1.0 / ADatum) * ANumTimes;
+  //FProduct := FProduct * Power(ADatum, ANumTimes);
+  if (FCount = 1) then begin
+    // first data so set _min/_max
+    FMin := ADatum;
+    FMax := ADatum;
+  end else begin
+    // adjust _min/_max boundaries if necessary
+    if ADatum < FMin then
+        FMin := ADatum;
+    if ADatum > FMax then
+        FMax := ADatum;
+  end;
+end;
+
+procedure TStatistics.RemoveDatum(ADatum : Double);
+begin
+  if FCount = 0 then
+    Exit;
+  Dec(FCount);
+  FTotal := FTotal - ADatum;
+  FTotal2 := FTotal2 - ADatum * ADatum;
+  FRecip := FRecip - (1.0 / ADatum);
+  if ABS(ADatum) > EPSILON then
+   //FProduct := FProduct / ADatum;
 end;
 
 initialization

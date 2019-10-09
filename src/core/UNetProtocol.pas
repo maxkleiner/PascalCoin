@@ -921,7 +921,7 @@ begin
         // Updated netConnection
         if Assigned(P^.netConnection) then begin
           // Delete old value
-          if Not DeleteNetConnection(P^.netConnection) then TLog.NewLog(lterror,Classname,'DEV ERROR 20180205-1');
+          if Not DeleteNetConnection(P^.netConnection) then TLog.NewLog(lterror,Classname,Format('DEV ERROR 20180205-1 %s %d',[nodeServerAddress.ip,nodeServerAddress.port]));
         end;
       end;
       P^ := nodeServerAddress;
@@ -1592,7 +1592,7 @@ Const CT_LogSender = 'GetNewBlockChainFromClient';
         BlocksList.Free;
       end;
     until (distinctmin=distinctmax);
-    Result := (OperationBlock.proof_of_work <> CT_OperationBlock_NUL.proof_of_work);
+    Result := (Not TBaseType.Equals(OperationBlock.proof_of_work,CT_OperationBlock_NUL.proof_of_work));
   End;
 
   procedure GetNewBank(start_block : Int64);
@@ -1647,7 +1647,7 @@ Const CT_LogSender = 'GetNewBlockChainFromClient';
       repeat
         BlocksList := TList<TPCOperationsComp>.Create;
         try
-          finished := NOT Do_GetOperationsBlock(Bank,start,start + 50,30000,false,BlocksList);
+          finished := NOT Do_GetOperationsBlock(Bank,start,start + 100,30000,false,BlocksList);
           i := 0;
           while (i<BlocksList.Count) And (Not finished) do begin
             OpComp := TPCOperationsComp(BlocksList[i]);
@@ -1779,6 +1779,7 @@ Const CT_LogSender = 'GetNewBlockChainFromClient';
     headerdata : TNetHeaderData;
     request_id : Cardinal;
     c : Cardinal;
+    LRandomMilis : Integer;
   Begin
     Result := False;
     sendData := TMemoryStream.Create;
@@ -1791,8 +1792,14 @@ Const CT_LogSender = 'GetNewBlockChainFromClient';
       if (c>=safebox_blockscount) then c := safebox_blockscount-1;
       sendData.Write(c,SizeOf(c));
       if (from_block>c) or (c>=safebox_blockscount) then begin
-        errors := 'ERROR DEV 20170727-1';
+        errors := Format('ERROR DEV 20170727-1 fromblock:%d c:%d safebox_blockscount:%d',[from_block,c,safebox_blockscount]);
         Exit;
+      end;
+      if Connection.NetProtocolVersion.protocol_version<9 then begin
+        // On old versions of nodes, must wait some seconds in order to do not reach max calls limits (limited to 30 calls in 30 seconds, so, at least wait 1 second per call)
+        LRandomMilis := 1000 + Random(500);
+        TLog.NewLog(ltDebug,CT_LogSender,Format('Sleep %d miliseconds prior to Call to GetSafeBox from blocks %d to %d of %d',[LRandomMilis,from_block,c,safebox_blockscount]));
+        Sleep(LRandomMilis);
       end;
       TLog.NewLog(ltDebug,CT_LogSender,Format('Call to GetSafeBox from blocks %d to %d of %d',[from_block,c,safebox_blockscount]));
       request_id := TNetData.NetData.NewRequestId;
@@ -3259,7 +3266,7 @@ begin
       //
       opht := TOperationsHashTree.Create;
       try
-        If Not opht.LoadOperationsHashTreeFromStream(dataReceived,False,0,Nil,errors) then begin
+        If Not opht.LoadOperationsHashTreeFromStream(dataReceived,False,TNode.Node.Bank.SafeBox.CurrentProtocol,TNode.Node.Bank.SafeBox.CurrentProtocol,Nil,errors) then begin
           DisconnectInvalidClient(False,'Invalid operations hash tree stream: '+errors);
           Exit;
         end;
@@ -3610,6 +3617,9 @@ Begin
       If (isFirstHello) And (HeaderData.header_type = ntp_response) then begin
         DoProcess_GetPendingOperations;
       end;
+      if (isFirstHello) then begin
+        TLog.NewLog(ltInfo,ClassName,Format('New connection from %s version %s protocol (%d,%d)',[ClientRemoteAddr,ClientAppVersion,NetProtocolVersion.protocol_version,NetProtocolVersion.protocol_available]));
+      end;
     end else begin
       TLog.NewLog(lterror,Classname,'Error decoding operations of HELLO: '+errors);
       DisconnectInvalidClient(false,'Error decoding operations of HELLO: '+errors);
@@ -3770,7 +3780,7 @@ var operationsComp : TPCOperationsComp;
     end;
     // Now we have nfpboarr with full data
     for i := 0 to High(nfpboarr) do begin
-      auxOp := TPCOperation.GetOperationFromStreamData(Self.FNetProtocolVersion.protocol_version,  nfpboarr[i].opStreamData );
+      auxOp := TPCOperation.GetOperationFromStreamData(original_OperationBlock.protocol_version,  nfpboarr[i].opStreamData );
       if not Assigned(auxOp) then begin
         errors := Format('Op index not available (%d/%d) OpReference:%d size:%d',[i,High(nfpboarr),nfpboarr[i].opReference,Length(nfpboarr[i].opStreamData)]);
         Exit;
@@ -3941,7 +3951,7 @@ begin
                   CT_NetOp_GetBlocks : Begin
                     if HeaderData.header_type=ntp_request then begin
                       if TNetData.NetData.IpInfos.ReachesLimits(Client.RemoteHost,CT_NetTransferType[HeaderData.header_type],TNetData.OperationToText(HeaderData.operation),HeaderData.buffer_data_length,
-                        TArray<TLimitLifetime>.Create(TLimitLifetime.Create(300,100,0),TLimitLifetime.Create(10,5,0))) then DisconnectInvalidClient(False,Format('Reached limit %s',[TNetData.OperationToText(HeaderData.operation)]))
+                        TArray<TLimitLifetime>.Create(TLimitLifetime.Create(5,10,0))) then DisconnectInvalidClient(False,Format('Reached limit %s',[TNetData.OperationToText(HeaderData.operation)]))
                       else DoProcess_GetBlocks_Request(HeaderData,ReceiveDataBuffer)
                     end else if HeaderData.header_type=ntp_response then begin
                       DoProcess_GetBlocks_Response(HeaderData,ReceiveDataBuffer);
@@ -3950,7 +3960,7 @@ begin
                   CT_NetOp_GetBlockHeaders : Begin
                     if HeaderData.header_type=ntp_request then begin
                       if TNetData.NetData.IpInfos.ReachesLimits(Client.RemoteHost,CT_NetTransferType[HeaderData.header_type],TNetData.OperationToText(HeaderData.operation),HeaderData.buffer_data_length,
-                        TArray<TLimitLifetime>.Create(TLimitLifetime.Create(30,30,0))) then DisconnectInvalidClient(False,Format('Reached limit %s',[TNetData.OperationToText(HeaderData.operation)]))
+                        TArray<TLimitLifetime>.Create(TLimitLifetime.Create(10,30,0))) then DisconnectInvalidClient(False,Format('Reached limit %s',[TNetData.OperationToText(HeaderData.operation)]))
                       else DoProcess_GetOperationsBlock_Request(HeaderData,ReceiveDataBuffer)
                     end else TLog.NewLog(ltdebug,Classname,'Received old response of: '+TNetData.HeaderDataToText(HeaderData));
                   End;
